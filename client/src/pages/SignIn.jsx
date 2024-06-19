@@ -1,11 +1,12 @@
-import { set } from 'mongoose';
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useState } from 'react';
+import { userDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
 
 const SignIn = () => {
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const dispatch = userDispatch();
+  const { loading, error } = useSelector((state) => state.user)
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
 
@@ -17,7 +18,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -28,20 +29,20 @@ const SignIn = () => {
       const data = await res.json();
       console.log(data);
 
-      if(data.success == false) {
-        setLoading(false);
+      if (data.success == false) {
+        dispatch(signInFailure(data.message));
         setError(data.message);
         return;
       }
+
     } catch (error) {
       setLoading(false);
       setError(error.message);
     }
 
-    setLoading(false);
-    setError(null);
+    dispatch(signInSuccess(data.user));
     navigate("/");
-    
+
   };
 
   return (
@@ -58,10 +59,10 @@ const SignIn = () => {
       <div className='flex gap-2 mt-5'>
         <p>Dont have an account?</p>
         <Link to={"/sign-up"}>
-        <span className='text-blue-700'>Sign Up</span>
+          <span className='text-blue-700'>Sign Up</span>
         </Link>
       </div>
-      {error &&  <p className='text-red-500'>{error}</p>}
+      {error && <p className='text-red-500'>{error}</p>}
     </div>
   )
 }
