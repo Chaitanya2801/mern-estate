@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
             required: true,
         },
     },
-    { timestamp: true },// creates timestamp of data at time of creation and updation
+    { timestamps: true, }// creates timestamp of data at time of creation and updation
 );
 
 const User = mongoose.model("User", userSchema);
