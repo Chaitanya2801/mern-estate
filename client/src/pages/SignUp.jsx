@@ -27,20 +27,19 @@ const SignUp = () => {
       const data = await res.json();
       console.log(data);
 
-      if(data.success == false) {
+      if (data.success == false) {
         setLoading(false);
         setError(data.message);
         return;
       }
+
+      setLoading(false);
+      setError(null);
+      navigate("/sign-in");
     } catch (error) {
       setLoading(false);
       setError(error.message);
     }
-
-    setLoading(false);
-    setError(null);
-    navigate("/sign-in");
-    
   };
 
   return (
@@ -58,10 +57,10 @@ const SignUp = () => {
       <div className='flex gap-2 mt-5'>
         <p>Have an account?</p>
         <Link to={"/sign-in"}>
-        <span className='text-blue-700'>Sign In</span>
+          <span className='text-blue-700'>Sign In</span>
         </Link>
       </div>
-      {error &&  <p className='text-red-500'>{error}</p>}
+      {error && <p className='text-red-500'>{error}</p>}
     </div>
   )
 }

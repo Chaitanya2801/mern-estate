@@ -1,11 +1,11 @@
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import { userDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
 
 const SignIn = () => {
 
-  const dispatch = userDispatch();
+  const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.user)
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
@@ -35,13 +35,13 @@ const SignIn = () => {
         return;
       }
 
+      dispatch(signInSuccess(data.user));
+      navigate("/");
+
     } catch (error) {
       setLoading(false);
       setError(error.message);
     }
-
-    dispatch(signInSuccess(data.user));
-    navigate("/");
 
   };
 
