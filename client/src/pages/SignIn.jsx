@@ -31,15 +31,13 @@ const SignIn = () => {
 
       if (data.success == false) {
         dispatch(signInFailure(data.message));
-        setError(data.message);
         return;
       }
 
-      dispatch(signInSuccess(data.user));
+      dispatch(signInSuccess(data));
       navigate("/");
 
     } catch (error) {
-      setLoading(false);
       setError(error.message);
     }
 
